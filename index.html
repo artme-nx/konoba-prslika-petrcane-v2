@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Konoba Prslika — autohtona dalmatinska kuhinja u srcu Petrčana, kraj Zadra. Svježa riba, ispod peke, školjke i domaće namirnice s ove obale." />
+  <title>Konoba Prslika · Petrčane · Dalmacija</title>
+
+  <!-- Google Fonts: Cormorant Garamond + Spectral -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <!-- GSAP 3.12.5 + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Lenis 1.1.18 -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════
+       DESIGN TOKENS — V2 BRIGHT AUTOHTONO
+    ═══════════════════════════════════════════ */
+    :root {
+      --parchment:    #F8F3EA;
+      --parchment-2:  #F0E9D9;
+      --ink:          #2E2A23;
+      --terra:        #C2613A;
+      --terra-soft:   #D4845C;
+      --olive:        #5C6B3E;
+      --olive-soft:   #7B8A58;
+      --stone:        #9B8E7A;
+      --line:         rgba(46, 42, 35, 0.12);
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Spectral', Georgia, serif;
+
+      --ease-smooth:  cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; scroll-behavior: auto; }
+
+    body {
+      background-color: var(--parchment);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grain texture overlay — always on */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.038;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    ul { list-style: none; }
+
+    /* ═══════════════════════════════════════════
+       TYPOGRAPHY UTILITIES
+    ═══════════════════════════════════════════ */
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--terra);
+    }
+
+    .display-xl {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7.5vw, 96px);
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+    }
+
+    .display-xl em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .display-lg {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.5vw, 58px);
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .display-md {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .spectral-italic {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT UTILITIES
+    ═══════════════════════════════════════════ */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 5vw, 80px);
+    }
+
+    .section-pad {
+      padding: clamp(72px, 10vw, 140px) 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCROLL REVEAL BASE STATES
+    ═══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      will-change: opacity, transform;
+    }
+
+    .reveal-img {
+      clip-path: inset(0 0 100% 0);
+      will-change: clip-path;
+    }
+
+    /* ═══════════════════════════════════════════
+       SVG OLIVE BRANCH MOTIF
+    ═══════════════════════════════════════════ */
+    .olive-branch-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 40px 0;
+    }
+
+    .olive-branch-divider .branch-line {
+      width: 80px;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .olive-branch-svg {
+      color: var(--olive-soft);
+    }
+
+    /* ═══════════════════════════════════════════
+       TERRA DECORATIVE LINE
+    ═══════════════════════════════════════════ */
+    .terra-line {
+      display: block;
+      width: 48px;
+      height: 2px;
+      background: var(--terra);
+      margin: 24px auto;
+    }
+
+    .terra-line--left {
+      margin-left: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       1. HEADER
+    ═══════════════════════════════════════════ */
+    #site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--parchment);
+      transition: box-shadow 0.35s var(--ease-smooth);
+    }
+
+    #site-header.scrolled {
+      box-shadow: 0 1px 0 var(--line), 0 2px 16px rgba(46, 42, 35, 0.06);
+    }
+
+    .header-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 20px clamp(20px, 5vw, 60px);
+      gap: 16px;
+    }
+
+    .header-logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .header-logo span {
+      color: var(--terra);
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .header-nav a {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--stone);
+      transition: color 0.25s;
+    }
+
+    .header-nav a:hover { color: var(--ink); }
+
+    .header-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-reserve {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 22px;
+      border: 1.5px solid var(--terra);
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--terra);
+      transition: background 0.25s, color 0.25s;
+    }
+
+    .btn-reserve:hover {
+      background: var(--terra);
+      color: var(--parchment);
+    }
+
+    .btn-reserve--solid {
+      background: var(--terra);
+      color: var(--parchment);
+    }
+
+    .btn-reserve--solid:hover {
+      background: var(--terra-soft);
+      border-color: var(--terra-soft);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 6px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--ink);
+      transition: transform 0.3s var(--ease-smooth), opacity 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile nav overlay */
+    #mobile-nav {
+      position: fixed;
+      inset: 0;
+      background: var(--parchment);
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-smooth);
+    }
+
+    #mobile-nav.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .mobile-nav-links a {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .mobile-nav-links a:hover { color: var(--terra); }
+
+    .mobile-nav-footer {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--stone);
+      letter-spacing: 0.12em;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════════
+       2. HERO — ASYMMETRIC EDITORIAL GRID
+    ═══════════════════════════════════════════ */
+    #hero {
+      padding-top: 88px;
+      min-height: 100svh;
+      background: var(--parchment);
+      display: flex;
+      align-items: stretch;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      grid-template-rows: 1fr auto;
+      gap: 0;
+      width: 100%;
+      min-height: calc(100svh - 88px);
+    }
+
+    /* Left: large image spans full height */
+    .hero-img-main {
+      grid-column: 1;
+      grid-row: 1 / 3;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform-origin: center;
+      filter: saturate(1.04) contrast(1.02);
+    }
+
+    /* Right top: text block */
+    .hero-text {
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(40px, 6vw, 80px) clamp(32px, 5vw, 72px) clamp(32px, 4vw, 48px);
+    }
+
+    .hero-text .eyebrow {
+      margin-bottom: 28px;
+    }
+
+    .hero-headline {
+      margin-bottom: 24px;
+    }
+
+    .hero-terra-line {
+      width: 64px;
+      height: 2px;
+      background: var(--terra);
+      margin: 28px 0;
+    }
+
+    .hero-subline {
+      font-family: var(--font-body);
+      font-size: clamp(15px, 1.4vw, 18px);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--stone);
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .hero-cta-row {
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .hero-scroll-hint {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+
+    /* Right bottom: smaller image */
+    .hero-img-secondary {
+      grid-column: 2;
+      grid-row: 2;
+      position: relative;
+      overflow: hidden;
+      max-height: 280px;
+    }
+
+    .hero-img-secondary img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.04) contrast(1.02);
+    }
+
+    /* Small tertiary image overlay on main image (bottom right corner) */
+    .hero-img-tertiary {
+      position: absolute;
+      bottom: clamp(16px, 3vw, 32px);
+      right: clamp(-20px, -3vw, -32px);
+      width: clamp(120px, 18vw, 220px);
+      height: clamp(80px, 12vw, 150px);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(46,42,35,0.15);
+      z-index: 2;
+    }
+
+    .hero-img-tertiary img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.04) contrast(1.02);
+    }
+
+    /* ═══════════════════════════════════════════
+       3. MANIFESTO
+    ═══════════════════════════════════════════ */
+    #manifesto {
+      background: var(--parchment);
+      padding: clamp(80px, 12vw, 160px) 0;
+      text-align: center;
+    }
+
+    .manifesto-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 5vw, 60px);
+    }
+
+    .manifesto-decor {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .manifesto-decor .line {
+      width: 60px;
+      height: 1px;
+      background: var(--terra);
+    }
+
+    .manifesto-quote {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.5vw, 44px);
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--ink);
+      letter-spacing: 0.01em;
+    }
+
+    .manifesto-quote em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--terra-soft);
+    }
+
+    .manifesto-decor-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .manifesto-decor-bottom .line {
+      width: 60px;
+      height: 1px;
+      background: var(--olive-soft);
+    }
+
+    /* ═══════════════════════════════════════════
+       4. MENU
+    ═══════════════════════════════════════════ */
+    #menu {
+      background: var(--parchment-2);
+      padding: clamp(72px, 10vw, 140px) 0;
+    }
+
+    .menu-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .menu-header .eyebrow {
+      margin-bottom: 16px;
+    }
+
+    .menu-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .menu-category {
+      padding: 48px clamp(24px, 4vw, 56px);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .menu-category:nth-child(2n) {
+      border-right: none;
+    }
+
+    .menu-category:nth-child(3),
+    .menu-category:nth-child(4) {
+      border-bottom: none;
+    }
+
+    .menu-category-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1.5px solid var(--olive-soft);
+    }
+
+    .menu-category-icon {
+      color: var(--olive);
+    }
+
+    .menu-category h3 {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.5vw, 30px);
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.01em;
+    }
+
+    .menu-item {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .menu-item-desc {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--stone);
+      line-height: 1.5;
+    }
+
+    .menu-divider {
+      margin: 72px 0 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ═══════════════════════════════════════════
+       5. PETRČANE PRIČA
+    ═══════════════════════════════════════════ */
+    #prica {
+      background: var(--parchment);
+      padding: clamp(72px, 10vw, 140px) 0;
+    }
+
+    .prica-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: clamp(40px, 6vw, 96px);
+      align-items: center;
+    }
+
+    .prica-img-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prica-img-wrap img {
+      width: 100%;
+      height: clamp(400px, 55vw, 700px);
+      object-fit: cover;
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .prica-img-tag {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: var(--parchment);
+      padding: 10px 18px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--olive);
+    }
+
+    .prica-content .eyebrow {
+      margin-bottom: 20px;
+    }
+
+    .prica-content h2 {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3.5vw, 48px);
+      font-weight: 400;
+      margin-bottom: 24px;
+      line-height: 1.15;
+    }
+
+    .prica-content h2 em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .prica-content p {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--stone);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .prica-ingredients {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+    }
+
+    .prica-ingredients-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin-bottom: 20px;
+    }
+
+    .ingredients-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .ingredient-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border: 1px solid var(--line);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--ink);
+    }
+
+    .ingredient-tag::before {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--terra-soft);
+      flex-shrink: 0;
+    }
+
+    .prica-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .prica-ingredient-img {
+      overflow: hidden;
+    }
+
+    .prica-ingredient-img img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      filter: saturate(1.03) contrast(1.02);
+      transition: transform 0.55s var(--ease-smooth);
+    }
+
+    .prica-ingredient-img:hover img {
+      transform: scale(1.04);
+    }
+
+    /* ═══════════════════════════════════════════
+       6. GALERIJA
+    ═══════════════════════════════════════════ */
+    #galerija {
+      background: var(--parchment-2);
+      padding: clamp(72px, 10vw, 140px) 0;
+    }
+
+    .galerija-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .galerija-header .eyebrow {
+      margin-bottom: 14px;
+    }
+
+    .galerija-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 400;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 12px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.05) contrast(1.02);
+      transition: transform 0.6s var(--ease-smooth), filter 0.4s;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
+      filter: saturate(1.1) contrast(1.04);
+    }
+
+    /* Terracotta border accent on hover */
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 0px solid var(--terra);
+      transition: border-width 0.3s var(--ease-smooth);
+      pointer-events: none;
+    }
+
+    .gallery-item:hover::after {
+      border-width: 3px;
+    }
+
+    .gallery-item:nth-child(1) { grid-row: span 2; }
+    .gallery-item:nth-child(1) img { height: 100%; min-height: 500px; }
+    .gallery-item:nth-child(2) img { height: 260px; }
+    .gallery-item:nth-child(3) img { height: 320px; }
+    .gallery-item:nth-child(4) img { height: 300px; }
+
+    /* ═══════════════════════════════════════════
+       7. REZERVACIJE
+    ═══════════════════════════════════════════ */
+    #rezervacije {
+      background: var(--parchment);
+      padding: clamp(72px, 10vw, 140px) 0;
+    }
+
+    .rezervacije-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 6vw, 96px);
+      align-items: start;
+    }
+
+    .rezervacije-content .eyebrow {
+      margin-bottom: 16px;
+    }
+
+    .rezervacije-content h2 {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3.5vw, 50px);
+      font-weight: 400;
+      margin-bottom: 32px;
+    }
+
+    .rezervacije-content h2 em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .radno-vrijeme-title {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin-bottom: 20px;
+    }
+
+    .radno-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+    }
+
+    .radno-table tr {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .radno-table td {
+      padding: 12px 0;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--ink);
+    }
+
+    .radno-table td:first-child {
+      font-weight: 400;
+      width: 55%;
+    }
+
+    .radno-table td:last-child {
+      color: var(--stone);
+      font-style: italic;
+    }
+
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .contact-item .contact-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--parchment-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-item a {
+      transition: color 0.2s;
+    }
+
+    .contact-item a:hover { color: var(--terra); }
+
+    .rezervacije-map {
+      width: 100%;
+      border-radius: 0;
+      overflow: hidden;
+    }
+
+    .rezervacije-map iframe {
+      width: 100%;
+      height: 420px;
+      border: none;
+      filter: saturate(0.9) contrast(1.02);
+    }
+
+    .map-caption {
+      margin-top: 12px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--stone);
+      text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════════════════
+       OLIVE BRANCH SVG SECTION DIVIDER
+    ═══════════════════════════════════════════ */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 clamp(24px, 5vw, 80px);
+      gap: 24px;
+    }
+
+    .section-divider .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* ═══════════════════════════════════════════
+       8. FOOTER
+    ═══════════════════════════════════════════ */
+    #site-footer {
+      background: var(--parchment-2);
+      padding: clamp(48px, 7vw, 96px) 0 clamp(32px, 5vw, 64px);
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: clamp(32px, 5vw, 72px);
+      margin-bottom: 56px;
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .footer-brand-tagline {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--stone);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--stone);
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-contact p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--stone);
+      line-height: 1.8;
+    }
+
+    .footer-contact a {
+      transition: color 0.2s;
+    }
+
+    .footer-contact a:hover { color: var(--terra); }
+
+    .footer-bottom {
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-legal {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--stone);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-olive {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--olive-soft);
+    }
+
+    /* ═══════════════════════════════════════════
+       MOBILE STICKY RESERVE BAR
+    ═══════════════════════════════════════════ */
+    #sticky-mobile-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: var(--parchment);
+      border-top: 1px solid var(--line);
+      padding: 12px 20px;
+      box-shadow: 0 -4px 24px rgba(46,42,35,0.08);
+    }
+
+    .sticky-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .sticky-bar-phone {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .sticky-bar-phone a {
+      color: var(--terra);
+      font-weight: 500;
+    }
+
+    .sticky-bar-cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 11px 24px;
+      background: var(--terra);
+      color: var(--parchment);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .sticky-bar-cta:hover { background: var(--terra-soft); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — TABLET & MOBILE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-category {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .menu-category:last-child {
+        border-bottom: none;
+      }
+
+      .menu-category:nth-child(3),
+      .menu-category:nth-child(4) {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .menu-category:last-child {
+        border-bottom: none;
+      }
+
+      .prica-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rezervacije-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gallery-item:nth-child(1) { grid-row: span 1; }
+      .gallery-item:nth-child(1) img { min-height: 260px; height: 260px; }
+      .gallery-item:nth-child(3) { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      /* Header mobile */
+      .header-nav { display: none; }
+      .btn-reserve.header-reserve { display: none; }
+      .hamburger { display: flex; }
+
+      .header-inner {
+        grid-template-columns: 1fr auto auto;
+        padding: 16px 20px;
+      }
+
+      /* Hero mobile: stacks vertically */
+      #hero { padding-top: 72px; }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: 50svh auto;
+        min-height: calc(100svh - 72px);
+      }
+
+      .hero-img-main {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .hero-img-main img {
+        height: 100%;
+      }
+
+      .hero-text {
+        grid-column: 1;
+        grid-row: 2;
+        padding: 36px 24px 100px;
+      }
+
+      .hero-img-secondary {
+        display: none;
+      }
+
+      .hero-img-tertiary {
+        display: none;
+      }
+
+      .hero-subline { max-width: 100%; }
+
+      /* Gallery mobile */
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .gallery-item:nth-child(3) { display: block; }
+      .gallery-item:nth-child(1) img,
+      .gallery-item:nth-child(2) img,
+      .gallery-item:nth-child(3) img,
+      .gallery-item:nth-child(4) img {
+        height: 200px;
+        min-height: 0;
+      }
+
+      /* Footer mobile */
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      /* Show sticky bar */
+      #sticky-mobile-bar { display: block; }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-item img { height: 260px !important; min-height: 0 !important; }
+
+      .rezervacije-grid { gap: 48px; }
+
+      .ingredients-row { gap: 8px; }
+    }
+
+    /* ═══════════════════════════════════════════
+       PREFERS REDUCED MOTION
+    ═══════════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .reveal-img { clip-path: none !important; }
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
+  <header id="site-header" role="banner">
+    <div class="header-inner">
+      <a href="#" class="header-logo">Konoba <span>Prslika</span></a>
+
+      <nav class="header-nav" aria-label="Glavna navigacija">
+        <a href="#menu">Jelovnik</a>
+        <a href="#prica">Priča</a>
+        <a href="#galerija">Galerija</a>
+        <a href="#rezervacije">Rezervacije</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="#rezervacije" class="btn-reserve header-reserve" aria-label="Rezerviraj stol">Rezerviraj</a>
+        <button class="hamburger" id="hamburger-btn" aria-label="Otvori izbornik" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav overlay -->
+  <div id="mobile-nav" role="dialog" aria-label="Navigacija" aria-modal="true">
+    <nav class="mobile-nav-links">
+      <a href="#menu" class="mobile-nav-link">Jelovnik</a>
+      <a href="#prica" class="mobile-nav-link">Priča</a>
+      <a href="#galerija" class="mobile-nav-link">Galerija</a>
+      <a href="#rezervacije" class="mobile-nav-link">Rezervacije</a>
+    </nav>
+    <div class="mobile-nav-footer">
+      <p>Petrčane, Dalmacija</p>
+      <p style="margin-top:8px;"><a href="tel:+385996917026" style="color:var(--terra);">+385 99 691 7026</a></p>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════
+         HERO — ASYMMETRIC EDITORIAL GRID
+    ═══════════════════════════════════════════ -->
+    <section id="hero" aria-label="Konoba Prslika hero">
+      <div class="hero-grid">
+
+        <!-- Left: large portrait image -->
+        <div class="hero-img-main reveal-img">
+          <img
+            src="https://loremflickr.com/900/700/dalmatian,seafood?lock=201"
+            alt="Autohtona dalmatinska kuhinja — Konoba Prslika"
+            loading="eager"
+            fetchpriority="high"
+            width="900" height="700"
+          />
+          <!-- Tertiary floating image -->
+          <div class="hero-img-tertiary reveal-img" style="transition-delay:0.3s">
+            <img
+              src="https://loremflickr.com/500/300/adriatic,sea?lock=203"
+              alt="Jadransko more, Petrčane"
+              width="500" height="300"
+            />
+          </div>
+        </div>
+
+        <!-- Right top: headline & text -->
+        <div class="hero-text">
+          <p class="eyebrow reveal">Konoba Prslika &middot; Petrčane</p>
+          <h1 class="display-xl hero-headline">
+            <span class="hero-word reveal" style="display:block">Autohtona</span>
+            <span class="hero-word reveal" style="display:block;transition-delay:0.1s"><em>dalmatinska</em></span>
+            <span class="hero-word reveal" style="display:block;transition-delay:0.2s">kuhinja.</span>
+          </h1>
+          <div class="hero-terra-line reveal" style="transition-delay:0.25s"></div>
+          <p class="hero-subline spectral-italic reveal" style="transition-delay:0.3s">
+            Petrčane &mdash; gdje borovi diraju more.
+          </p>
+          <div class="hero-cta-row reveal" style="transition-delay:0.4s">
+            <a href="#rezervacije" class="btn-reserve btn-reserve--solid">Rezerviraj stol</a>
+            <span class="hero-scroll-hint">Istraži &darr;</span>
+          </div>
+        </div>
+
+        <!-- Right bottom: secondary image -->
+        <div class="hero-img-secondary reveal-img" style="transition-delay:0.15s">
+          <img
+            src="https://loremflickr.com/500/400/pine,petrcane?lock=202"
+            alt="Borovi u Petrčanama"
+            width="500" height="400"
+          />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Olive branch divider -->
+    <div class="section-divider" style="padding-top:56px; padding-bottom:0;">
+      <div class="divider-line"></div>
+      <svg class="olive-branch-svg" width="48" height="32" viewBox="0 0 48 32" fill="none" aria-hidden="true">
+        <path d="M4 28 C8 20, 16 14, 24 16 C32 18, 38 12, 44 6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="12" cy="20" rx="4" ry="2.5" transform="rotate(-35 12 20)" fill="currentColor" opacity="0.55"/>
+        <ellipse cx="20" cy="15" rx="4" ry="2.5" transform="rotate(-20 20 15)" fill="currentColor" opacity="0.55"/>
+        <ellipse cx="30" cy="12" rx="4" ry="2.5" transform="rotate(-10 30 12)" fill="currentColor" opacity="0.55"/>
+        <ellipse cx="38" cy="8" rx="3.5" ry="2" transform="rotate(5 38 8)" fill="currentColor" opacity="0.55"/>
+      </svg>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         MANIFESTO
+    ═══════════════════════════════════════════ -->
+    <section id="manifesto" aria-label="Naša filozofija">
+      <div class="manifesto-inner">
+        <div class="manifesto-decor reveal">
+          <div class="line"></div>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="3" fill="var(--terra)" opacity="0.5"/>
+            <circle cx="10" cy="10" r="1.5" fill="var(--terra)"/>
+          </svg>
+          <div class="line"></div>
+        </div>
+        <blockquote class="manifesto-quote reveal" style="transition-delay:0.1s">
+          Autohtona kuhinja <em>nije trend.</em><br>
+          To je sjećanje. Svako jelo &mdash;<br>
+          recept koji pamti <em>ovu obalu.</em>
+        </blockquote>
+        <div class="manifesto-decor-bottom reveal" style="transition-delay:0.2s">
+          <div class="line"></div>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 20 C6 14, 11 10, 12 12 C13 10, 18 14, 20 20" stroke="var(--olive-soft)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <ellipse cx="9" cy="14" rx="3" ry="1.8" transform="rotate(-25 9 14)" fill="var(--olive-soft)" opacity="0.6"/>
+            <ellipse cx="15" cy="14" rx="3" ry="1.8" transform="rotate(25 15 14)" fill="var(--olive-soft)" opacity="0.6"/>
+          </svg>
+          <div class="line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         MENU
+    ═══════════════════════════════════════════ -->
+    <section id="menu" aria-label="Jelovnik">
+      <div class="container section-pad">
+
+        <div class="menu-header">
+          <p class="eyebrow reveal">Jelovnik</p>
+          <h2 class="reveal" style="transition-delay:0.1s">Autohtona jela</h2>
+          <p class="spectral-italic reveal" style="font-size:16px;color:var(--stone);margin-top:14px;transition-delay:0.15s">
+            Svježina mora. Toplina ognjišta. Okusi koji ostaju.
+          </p>
+        </div>
+
+        <div class="menu-grid reveal" style="transition-delay:0.1s">
+
+          <!-- Kategorija 1 -->
+          <div class="menu-category">
+            <div class="menu-category-header">
+              <svg class="menu-category-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M3 15 Q10 5 17 15" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <circle cx="10" cy="8" r="2" fill="currentColor" opacity="0.4"/>
+              </svg>
+              <h3>Riba s gradela</h3>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Brancin s gradela</p>
+              <p class="menu-item-desc">Svježi brancin pečen na žaru, maslinovo ulje, limun, kapar, krumpir ispod peke</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Orada na žaru</p>
+              <p class="menu-item-desc">Cijela orada s ljetnim biljem, dalmatinski prstaci, blitva s češnjakom</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Zubatac s gradela</p>
+              <p class="menu-item-desc">Nježno meso zubaca, pečeno na ugljenu, s umakom od maslinova ulja i peršina</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Miješana riba s gradela</p>
+              <p class="menu-item-desc">Kombinacija sezonske ribe prema ribarskom ulovu dana, pečena na čistom ugljenu</p>
+            </div>
+          </div>
+
+          <!-- Kategorija 2 -->
+          <div class="menu-category">
+            <div class="menu-category-header">
+              <svg class="menu-category-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <ellipse cx="10" cy="13" rx="7" ry="4" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                <path d="M6 13 Q8 8 10 7 Q12 8 14 13" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              </svg>
+              <h3>Ispod peke</h3>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Janjetina ispod peke</p>
+              <p class="menu-item-desc">Domaća janjetina pečena satima pod čripnjom, s povrćem i aromatičnim biljem</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Hobotnica ispod peke</p>
+              <p class="menu-item-desc">Svježa jadranska hobotnica, krumpir, kapula, maslinovo ulje — dalmatinska klasika</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Teletina ispod peke</p>
+              <p class="menu-item-desc">Mekana teletina s lokalnim začinima, pečena polagano do savršene nježnosti</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Sezonsko povrće ispod peke</p>
+              <p class="menu-item-desc">Mješavina sezonskog povrća s maslinovim uljem i dalmatinskim aromama</p>
+            </div>
+          </div>
+
+          <!-- Kategorija 3 -->
+          <div class="menu-category">
+            <div class="menu-category-header">
+              <svg class="menu-category-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 12 Q6 7 10 8 Q14 7 16 12 Q14 16 10 16 Q6 16 4 12Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                <circle cx="10" cy="10" r="1.5" fill="currentColor" opacity="0.5"/>
+              </svg>
+              <h3>Školjke i morski plodovi</h3>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Buzara od dagnji</p>
+              <p class="menu-item-desc">Svježe dagnje u bijelom vinu, češnjaku, kruhu i peršinu — buzara recept s tradicijom</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Brudet od rakova</p>
+              <p class="menu-item-desc">Jadranski rakovi u gustom dalmatinskom brudetu, posluženo s palentom</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Kamenice svježe</p>
+              <p class="menu-item-desc">Zadarsko-ninska kamenica, otvorena na licu mjesta, s limunom i crnim kruhom</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Miješani morski plodovi</p>
+              <p class="menu-item-desc">Lignje, škampi, dagnje i kamenice — priprema prema ulovnoj ponudi dana</p>
+            </div>
+          </div>
+
+          <!-- Kategorija 4 -->
+          <div class="menu-category">
+            <div class="menu-category-header">
+              <svg class="menu-category-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 16 C5 10, 8 6, 10 5 C12 6, 15 10, 15 16" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M7 14 Q10 11 13 14" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
+              </svg>
+              <h3>Domaće i divljač</h3>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Pršut i sir</p>
+              <p class="menu-item-desc">Dalmatinski pršut i paški sir, masline, lokalni kruh — odabrani hladni start</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Domaća tjestenina</p>
+              <p class="menu-item-desc">Pašticada s domaćim gnocchima, goveđi brudet, karamelizirana kapula</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Divljač u lončicu</p>
+              <p class="menu-item-desc">Sezonska divljač s lokalnim povrćem, priprema prema dostupnosti tjednog ulova</p>
+            </div>
+            <div class="menu-item">
+              <p class="menu-item-name">Rozata</p>
+              <p class="menu-item-desc">Klasični dalmatinski desert od jaja, mlijeka i karamele — recept po baki</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Menu divider note -->
+        <div class="menu-divider">
+          <div class="olive-branch-divider reveal">
+            <div class="branch-line"></div>
+            <svg class="olive-branch-svg" width="56" height="36" viewBox="0 0 56 36" fill="none" aria-hidden="true">
+              <path d="M6 30 C12 20, 22 12, 28 16 C34 20, 42 10, 50 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="14" cy="22" rx="4.5" ry="2.8" transform="rotate(-35 14 22)" fill="currentColor" opacity="0.5"/>
+              <ellipse cx="23" cy="16" rx="4.5" ry="2.8" transform="rotate(-20 23 16)" fill="currentColor" opacity="0.5"/>
+              <ellipse cx="34" cy="12" rx="4" ry="2.5" transform="rotate(-8 34 12)" fill="currentColor" opacity="0.5"/>
+              <ellipse cx="43" cy="7" rx="3.5" ry="2" transform="rotate(8 43 7)" fill="currentColor" opacity="0.5"/>
+            </svg>
+            <div class="branch-line"></div>
+          </div>
+        </div>
+
+        <p class="spectral-italic reveal" style="text-align:center;color:var(--stone);font-size:14px;letter-spacing:0.06em;transition-delay:0.1s">
+          Jelovnik se mijenja prema godišnjem dobu i ulovu. &bull; Cijena na upit. &bull; Rezervacija preporučena.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         PETRČANE PRIČA
+    ═══════════════════════════════════════════ -->
+    <section id="prica" aria-label="Petrčane priča">
+      <div class="container section-pad">
+
+        <div class="prica-grid">
+
+          <!-- Left: large story image -->
+          <div class="prica-img-wrap">
+            <div class="reveal-img">
+              <img
+                src="https://loremflickr.com/800/600/konoba,dalmatia?lock=204"
+                alt="Konoba Prslika — Petrčane, Dalmacija"
+                width="800" height="600"
+              />
+            </div>
+            <div class="prica-img-tag">Petrčane · Zadar</div>
+          </div>
+
+          <!-- Right: text -->
+          <div class="prica-content">
+            <p class="eyebrow reveal">Petrčane &mdash; naša priča</p>
+            <h2 class="reveal" style="transition-delay:0.1s">
+              Gdje borovi<br><em>diraju more</em>
+            </h2>
+            <span class="terra-line terra-line--left reveal" style="transition-delay:0.15s"></span>
+            <p class="reveal" style="transition-delay:0.2s">
+              Petrčane je malo mjestance kraj Zadra okruženo gustim borovim šumama koje se spuštaju gotovo do same morske obale. U tom tihom prostoru između šume i mora, Konoba Prslika postoji kao mjesto autohtonog okusa.
+            </p>
+            <p class="reveal" style="transition-delay:0.25s">
+              Ne nudimo trendove. Nudimo kuhanje kakvo pamti ova obala — janjetinu ispod peke, ribu s gradela, svježe kamenice i brudet koji miriše na otvoreni ugalj. Sve namirnice dolaze iz neposredne blizine: more je na korak, tržnica je u Zadru, a maslinovo ulje s ove dalmatinske grude ne uspoređujemo ni s čime.
+            </p>
+            <p class="reveal" style="transition-delay:0.3s">
+              Konoba je mjesto gdje dolazite bez žurbe. S obitelji, s prijateljima, s kilogramom riba i čašom domaćeg vina.
+            </p>
+
+            <!-- Ingredient tags -->
+            <div class="prica-ingredients reveal" style="transition-delay:0.35s">
+              <p class="prica-ingredients-label">Naše namirnice</p>
+              <div class="ingredients-row">
+                <span class="ingredient-tag">Maslinovo ulje</span>
+                <span class="ingredient-tag">Svježa riba</span>
+                <span class="ingredient-tag">Lokalno bilje</span>
+                <span class="ingredient-tag">Jadranske kamenice</span>
+                <span class="ingredient-tag">Dalmatinski pršut</span>
+                <span class="ingredient-tag">Paški sir</span>
+              </div>
+            </div>
+
+            <!-- Ingredient mini gallery -->
+            <div class="prica-img-grid" style="margin-top:28px">
+              <div class="prica-ingredient-img reveal-img">
+                <img src="https://loremflickr.com/400/400/olive,oil?lock=205" alt="Maslinovo ulje" width="400" height="400" />
+              </div>
+              <div class="prica-ingredient-img reveal-img" style="transition-delay:0.1s">
+                <img src="https://loremflickr.com/400/400/grilled,fish?lock=206" alt="Riba s gradela" width="400" height="400" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         GALERIJA
+    ═══════════════════════════════════════════ -->
+    <section id="galerija" aria-label="Galerija">
+      <div class="container section-pad">
+
+        <div class="galerija-header">
+          <p class="eyebrow reveal">Galerija</p>
+          <h2 class="reveal" style="transition-delay:0.08s">Priče u slikama</h2>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-item reveal-img">
+            <img src="https://loremflickr.com/600/800/peka,meat?lock=208" alt="Ispod peke" width="600" height="800" loading="lazy" />
+          </div>
+          <div class="gallery-item reveal-img" style="transition-delay:0.1s">
+            <img src="https://loremflickr.com/600/500/adriatic,food?lock=209" alt="Dalmatinska hrana" width="600" height="500" loading="lazy" />
+          </div>
+          <div class="gallery-item reveal-img" style="transition-delay:0.15s">
+            <img src="https://loremflickr.com/500/600/rustic,dalmatian?lock=210" alt="Rustična dalmatinska konoba" width="500" height="600" loading="lazy" />
+          </div>
+          <div class="gallery-item reveal-img" style="transition-delay:0.08s">
+            <img src="https://loremflickr.com/400/400/seafood,plate?lock=207" alt="Morski plodovi" width="400" height="400" loading="lazy" />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         REZERVACIJE
+    ═══════════════════════════════════════════ -->
+    <section id="rezervacije" aria-label="Rezervacije i kontakt">
+      <div class="container section-pad">
+
+        <div class="rezervacije-grid">
+
+          <!-- Left: info -->
+          <div class="rezervacije-content">
+            <p class="eyebrow reveal">Rezervacije</p>
+            <h2 class="reveal" style="transition-delay:0.08s">
+              Rezerviraj<br><em>stol</em>
+            </h2>
+            <span class="terra-line terra-line--left reveal" style="transition-delay:0.12s"></span>
+
+            <p class="radno-vrijeme-title reveal" style="transition-delay:0.15s">Radno vrijeme</p>
+            <table class="radno-table reveal" style="transition-delay:0.18s" aria-label="Radno vrijeme konobe">
+              <tbody>
+                <tr>
+                  <td>Ponedjeljak &mdash; petak</td>
+                  <td>12:00 &mdash; 22:00</td>
+                </tr>
+                <tr>
+                  <td>Subota &mdash; nedjelja</td>
+                  <td>11:00 &mdash; 23:00</td>
+                </tr>
+                <tr>
+                  <td>Peka (ispod peke)</td>
+                  <td>Rezervacija dan ranije</td>
+                </tr>
+                <tr>
+                  <td>Zatvoreno</td>
+                  <td>Utorak (izvan sezone)</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="contact-block reveal" style="transition-delay:0.22s">
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 3.5A1.5 1.5 0 013.5 2h1.22c.332 0 .625.2.745.5l.78 1.95a.75.75 0 01-.17.82l-.76.76a10.005 10.005 0 004.66 4.66l.76-.76a.75.75 0 01.82-.17l1.95.78c.3.12.5.413.5.745v1.22A1.5 1.5 0 0112.5 14C6.148 14 2 9.852 2 3.5z" fill="var(--terra)" opacity="0.85"/>
+                  </svg>
+                </div>
+                <span>Telefon: <a href="tel:+385996917026">+385 99 691 7026</a></span>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="2" y="2" width="12" height="12" rx="3" stroke="var(--terra)" stroke-width="1.2" fill="none" opacity="0.85"/>
+                    <circle cx="8" cy="8" r="2.5" stroke="var(--terra)" stroke-width="1.2" fill="none" opacity="0.85"/>
+                    <circle cx="11.5" cy="4.5" r="0.8" fill="var(--terra)" opacity="0.85"/>
+                  </svg>
+                </div>
+                <span>Instagram: <a href="https://www.instagram.com/konobaprslika" target="_blank" rel="noopener noreferrer" aria-label="Konoba Prslika Instagram">@konobaprslika</a></span>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM0 8a8 8 0 1116 0A8 8 0 010 8z" fill="none"/>
+                    <path d="M8 2a6 6 0 110 12A6 6 0 018 2zm0 1.5A4.5 4.5 0 003.5 8c0 1.3.55 2.47 1.43 3.29L8 8.5V3.5z" fill="var(--terra)" opacity="0.6"/>
+                    <path d="M8 2.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM7 7h2v5H7z" fill="var(--terra)" opacity="0.4"/>
+                  </svg>
+                </div>
+                <span>Petrčane, kraj Zadra, Dalmacija</span>
+              </div>
+            </div>
+
+            <a href="tel:+385996917026" class="btn-reserve btn-reserve--solid reveal" style="transition-delay:0.28s;display:inline-flex;">
+              Nazovi za rezervaciju
+            </a>
+          </div>
+
+          <!-- Right: map -->
+          <div class="rezervacije-map reveal" style="transition-delay:0.15s">
+            <iframe
+              src="https://maps.google.com/maps?q=Konoba+Prslika+Petrcane&t=&z=14&ie=UTF8&iwloc=&output=embed"
+              title="Konoba Prslika lokacija na karti"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              aria-label="Interaktivna karta — lokacija Konobe Prslika u Petrčanama"
+            ></iframe>
+            <p class="map-caption">Petrčane, Zadar, Dalmacija</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer id="site-footer" role="contentinfo">
+    <div class="container">
+
+      <div class="footer-inner">
+
+        <!-- Brand -->
+        <div>
+          <!-- Olive branch SVG motif -->
+          <div class="footer-olive" style="margin-bottom:20px">
+            <svg width="40" height="28" viewBox="0 0 40 28" fill="none" aria-hidden="true">
+              <path d="M4 24 C8 16, 14 10, 20 12 C26 14, 30 8, 36 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="10" cy="17" rx="4" ry="2.5" transform="rotate(-35 10 17)" fill="currentColor" opacity="0.55"/>
+              <ellipse cx="18" cy="12" rx="4" ry="2.5" transform="rotate(-18 18 12)" fill="currentColor" opacity="0.55"/>
+              <ellipse cx="27" cy="9" rx="3.5" ry="2" transform="rotate(-5 27 9)" fill="currentColor" opacity="0.55"/>
+            </svg>
+          </div>
+          <p class="footer-brand-name">Konoba Prslika</p>
+          <p class="footer-brand-tagline">
+            Autohtona dalmatinska kuhinja.<br>
+            Petrčane &middot; Zadar &middot; Dalmacija.
+          </p>
+          <p style="font-family:var(--font-body);font-size:13px;color:var(--stone);">
+            <a href="tel:+385996917026" style="color:var(--terra);font-size:15px;font-weight:400;">+385 99 691 7026</a>
+          </p>
+        </div>
+
+        <!-- Nav links -->
+        <div>
+          <p class="footer-col-title">Navigacija</p>
+          <nav class="footer-links" aria-label="Footer navigacija">
+            <a href="#hero">Naslovnica</a>
+            <a href="#menu">Jelovnik</a>
+            <a href="#prica">Petrčane priča</a>
+            <a href="#galerija">Galerija</a>
+            <a href="#rezervacije">Rezervacije</a>
+          </nav>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <p class="footer-col-title">Kontakt</p>
+          <div class="footer-contact">
+            <p>
+              <a href="tel:+385996917026">+385 99 691 7026</a><br>
+              <a href="https://www.instagram.com/konobaprslika" target="_blank" rel="noopener noreferrer">Instagram</a><br>
+              Petrčane, Zadar<br>
+              Hrvatska
+            </p>
+          </div>
+          <div style="margin-top:24px;">
+            <a href="https://www.instagram.com/konobaprslika" target="_blank" rel="noopener noreferrer" aria-label="Konoba Prslika na Instagramu" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--olive);text-decoration:none;transition:color 0.2s;">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <rect x="1.5" y="1.5" width="15" height="15" rx="4.5" stroke="currentColor" stroke-width="1.3" fill="none"/>
+                <circle cx="9" cy="9" r="3" stroke="currentColor" stroke-width="1.3" fill="none"/>
+                <circle cx="13" cy="5" r="0.9" fill="currentColor"/>
+              </svg>
+              Instagram
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-legal">
+          &copy; 2025 Konoba Prslika &middot; Petrčane &middot; Dalmacija &middot; Hrvatska
+        </p>
+        <div class="footer-olive" style="font-family:var(--font-body);font-size:12px;color:var(--stone);letter-spacing:0.1em;text-transform:uppercase;">
+          <svg width="24" height="18" viewBox="0 0 24 18" fill="none" aria-hidden="true">
+            <path d="M2 14 C5 9, 9 5, 12 7 C15 9, 19 4, 22 2" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+            <ellipse cx="6" cy="10" rx="3" ry="1.8" transform="rotate(-30 6 10)" fill="currentColor" opacity="0.5"/>
+            <ellipse cx="12" cy="7" rx="3" ry="1.8" transform="rotate(-15 12 7)" fill="currentColor" opacity="0.5"/>
+            <ellipse cx="18" cy="5" rx="2.5" ry="1.5" transform="rotate(5 18 5)" fill="currentColor" opacity="0.5"/>
+          </svg>
+          Autohtona kuhinja
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       MOBILE STICKY BAR
+  ═══════════════════════════════════════════ -->
+  <div id="sticky-mobile-bar" aria-label="Brzi kontakt i rezervacija">
+    <div class="sticky-bar-inner">
+      <p class="sticky-bar-phone">
+        <a href="tel:+385996917026">+385 99 691 7026</a>
+      </p>
+      <a href="tel:+385996917026" class="sticky-bar-cta">Rezerviraj stol</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════ -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ── Reduced motion check ──────────────────
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ── Lenis smooth scroll ───────────────────
+      let lenis;
+      if (!prefersReduced) {
+        lenis = new Lenis({
+          duration: 1.1,
+          easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+          orientation: 'vertical',
+          smoothWheel: true,
+          smoothTouch: false,
+        });
+
+        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+        lenis.on('scroll', ScrollTrigger.update);
+      }
+
+      // ── Smooth anchor scroll ──────────────────
+      document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        anchor.addEventListener('click', function (e) {
+          var target = document.querySelector(this.getAttribute('href'));
+          if (!target) return;
+          e.preventDefault();
+          if (lenis) {
+            lenis.scrollTo(target, { offset: -80, duration: 1.4 });
+          } else {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+          // Close mobile nav if open
+          closeMobileNav();
+        });
+      });
+
+      // ── Header scroll effect ──────────────────
+      var header = document.getElementById('site-header');
+      ScrollTrigger.create({
+        start: 'top -60px',
+        onEnter: function () { header.classList.add('scrolled'); },
+        onLeaveBack: function () { header.classList.remove('scrolled'); },
+      });
+
+      // ── Hamburger / mobile nav ────────────────
+      var hamburger = document.getElementById('hamburger-btn');
+      var mobileNav = document.getElementById('mobile-nav');
+      var mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+      function openMobileNav() {
+        hamburger.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+        mobileNav.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        if (!prefersReduced) {
+          gsap.fromTo(mobileNav.querySelectorAll('a, .mobile-nav-footer'),
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: 'power3.out', delay: 0.15 }
+          );
+        }
+      }
+
+      function closeMobileNav() {
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileNav.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      hamburger.addEventListener('click', function () {
+        if (mobileNav.classList.contains('open')) {
+          closeMobileNav();
+        } else {
+          openMobileNav();
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+          closeMobileNav();
+        }
+      });
+
+      // ── ANIMATIONS (skip if reduced motion) ──
+      if (prefersReduced) {
+        document.querySelectorAll('.reveal, .reveal-img').forEach(function (el) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          el.style.clipPath = 'none';
+        });
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ── Hero initial animations ───────────────
+      // Clip-path reveal on hero images
+      var heroImages = document.querySelectorAll('.hero-img-main.reveal-img, .hero-img-secondary.reveal-img');
+      heroImages.forEach(function (el, i) {
+        gsap.fromTo(el,
+          { clipPath: 'inset(0 0 100% 0)' },
+          {
+            clipPath: 'inset(0 0 0% 0)',
+            duration: 1.1,
+            ease: 'power3.inOut',
+            delay: 0.1 + i * 0.15,
+          }
+        );
+      });
+
+      // Tertiary floating image
+      var tertiaryImg = document.querySelector('.hero-img-tertiary.reveal-img');
+      if (tertiaryImg) {
+        gsap.fromTo(tertiaryImg,
+          { clipPath: 'inset(0 0 100% 0)', opacity: 0 },
+          { clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: 0.9, ease: 'power3.inOut', delay: 0.55 }
+        );
+      }
+
+      // Hero text stagger reveal
+      gsap.fromTo('.hero-text .reveal',
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          stagger: 0.12,
+          ease: 'power3.out',
+          delay: 0.5,
+        }
+      );
+
+      // Gentle Ken Burns on hero main image
+      gsap.fromTo('.hero-img-main img',
+        { scale: 1.06 },
+        { scale: 1.0, duration: 2.4, ease: 'power2.out', delay: 0.1 }
+      );
+
+      // ── Scroll reveals ────────────────────────
+      // All .reveal elements (text)
+      gsap.utils.toArray('.reveal').forEach(function (el) {
+        // Skip hero text which is already animated
+        if (el.closest('#hero')) return;
+        gsap.fromTo(el,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+            },
+          }
+        );
+      });
+
+      // All .reveal-img elements (clip-path)
+      gsap.utils.toArray('.reveal-img').forEach(function (el) {
+        if (el.closest('#hero')) return;
+        gsap.fromTo(el,
+          { clipPath: 'inset(0 0 100% 0)' },
+          {
+            clipPath: 'inset(0 0 0% 0)',
+            duration: 1.1,
+            ease: 'power3.inOut',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        );
+      });
+
+      // ── Manifesto quote — word stagger ───────
+      var manifestoQuote = document.querySelector('.manifesto-quote');
+      if (manifestoQuote) {
+        var words = manifestoQuote.innerHTML
+          .split(/(<[^>]+>|&[^;]+;|\s+)/)
+          .filter(function (w) { return w.trim().length > 0 && !w.startsWith('<') && !w.startsWith('&'); });
+
+        // Simple word stagger via GSAP on the whole element
+        ScrollTrigger.create({
+          trigger: manifestoQuote,
+          start: 'top 82%',
+          once: true,
+          onEnter: function () {
+            gsap.fromTo(manifestoQuote,
+              { opacity: 0, y: 18 },
+              { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }
+            );
+          }
+        });
+      }
+
+      // ── Parallax on story image ───────────────
+      var picaImg = document.querySelector('.prica-img-wrap img');
+      if (picaImg) {
+        gsap.to(picaImg, {
+          yPercent: -8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.prica-img-wrap',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+          },
+        });
+      }
+
+      // ── Gallery image warm hover filter ──────
+      // Handled via CSS transitions (saturate + contrast)
+
+    }());
+  </script>
+
+</body>
+</html>
